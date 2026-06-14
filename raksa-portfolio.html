@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Raksa Nhean — Web Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0D0D0D; --surface: #161616; --card: #1C1C1C;
+    --accent1: #FF6B35; --accent2: #FFD23F; --accent3: #06D6A0;
+    --text: #F5F5F0; --muted: #888; --border: rgba(255,255,255,0.08);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 16px; line-height: 1.7; overflow-x: hidden; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 2rem; background: rgba(13,13,13,0.85);
+    backdrop-filter: blur(12px); border-bottom: 1px solid var(--border);
+  }
+  .nav-logo { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; color: var(--text); text-decoration: none; }
+  .nav-logo span { color: var(--accent1); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 500; transition: color .2s; }
+  .nav-links a:hover { color: var(--text); }
+
+  .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding: 8rem 2rem 4rem; max-width: 900px; margin: 0 auto; position: relative; }
+  .hero-tag { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,107,53,0.12); border: 1px solid rgba(255,107,53,0.25); color: var(--accent1); font-size: 13px; font-weight: 500; padding: 6px 14px; border-radius: 100px; margin-bottom: 2rem; }
+  .hero-tag::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--accent1); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .hero h1 { font-family: 'Syne', sans-serif; font-size: clamp(44px, 8vw, 88px); font-weight: 800; line-height: 1.0; letter-spacing: -2px; margin-bottom: 1.5rem; }
+  .hero h1 .line2 { color: var(--accent1); }
+  .hero h1 .line3 { -webkit-text-stroke: 1.5px var(--text); color: transparent; }
+  .hero-sub { font-size: 18px; color: var(--muted); max-width: 480px; margin-bottom: 2.5rem; line-height: 1.6; }
+  .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn-primary { background: var(--accent1); color: #fff; padding: 13px 28px; border-radius: 8px; text-decoration: none; font-weight: 500; font-size: 15px; transition: transform .15s, background .2s; display: inline-block; cursor: pointer; border: none; font-family: 'DM Sans', sans-serif; }
+  .btn-primary:hover { background: #e55a25; transform: translateY(-2px); }
+  .btn-ghost { border: 1px solid var(--border); color: var(--text); padding: 13px 28px; border-radius: 8px; text-decoration: none; font-weight: 500; font-size: 15px; transition: border-color .2s, transform .15s; display: inline-block; }
+  .btn-ghost:hover { border-color: rgba(255,255,255,0.3); transform: translateY(-2px); }
+  .scroll-hint { position: absolute; bottom: 2.5rem; left: 2rem; font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 8px; letter-spacing: .05em; text-transform: uppercase; }
+  .scroll-hint::after { content:''; display:block; width:40px; height:1px; background:var(--muted); }
+  .shape { position:absolute; border-radius:50%; filter:blur(80px); pointer-events:none; z-index:-1; }
+  .shape-1 { width:400px; height:400px; background:rgba(255,107,53,0.12); top:10%; right:-100px; }
+  .shape-2 { width:300px; height:300px; background:rgba(6,214,160,0.08); bottom:20%; left:-80px; }
+
+  section { padding: 6rem 2rem; max-width: 900px; margin: 0 auto; }
+  .section-label { font-size: 12px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--accent1); margin-bottom: 1rem; }
+  .section-title { font-family: 'Syne', sans-serif; font-size: clamp(28px, 4vw, 42px); font-weight: 800; letter-spacing: -1px; margin-bottom: 3rem; line-height: 1.1; }
+
+  /* SERVICES */
+  .services-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px; }
+  .service-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 1.75rem; transition: border-color .2s, transform .2s; position:relative; overflow:hidden; }
+  .service-card:hover { border-color: rgba(255,107,53,0.3); transform: translateY(-4px); }
+  .service-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background: linear-gradient(90deg, var(--accent1), var(--accent2)); opacity:0; transition:opacity .2s; }
+  .service-card:hover::before { opacity:1; }
+  .service-icon { font-size:28px; margin-bottom:1rem; display:block; }
+  .service-card h3 { font-family:'Syne',sans-serif; font-size:17px; font-weight:700; margin-bottom:.5rem; }
+  .service-card p { font-size:14px; color:var(--muted); line-height:1.6; }
+
+  .free-banner { background: linear-gradient(135deg, rgba(6,214,160,0.1), rgba(255,210,63,0.08)); border: 1px solid rgba(6,214,160,0.3); border-radius: 16px; padding: 2rem; display: flex; align-items: center; gap: 1.5rem; margin-top: 2rem; }
+  .free-badge { background: var(--accent3); color: #04342C; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 13px; padding: 6px 14px; border-radius: 100px; white-space: nowrap; flex-shrink: 0; }
+  .free-banner p { font-size: 15px; color: var(--muted); line-height: 1.6; }
+  .free-banner p strong { color: var(--text); }
+
+  /* PORTFOLIO */
+  .portfolio-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; }
+  .portfolio-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; transition: transform .2s, border-color .2s; }
+  .portfolio-card:hover { transform: translateY(-4px); border-color: rgba(255,107,53,0.3); }
+  .portfolio-preview { height: 180px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .portfolio-info { padding: 1.25rem; }
+  .portfolio-info h3 { font-family:'Syne',sans-serif; font-size:15px; font-weight:700; margin-bottom:4px; }
+  .portfolio-info p { font-size:13px; color:var(--muted); }
+  .portfolio-tag { display:inline-block; font-size:11px; padding:3px 10px; border-radius:100px; background:rgba(255,107,53,0.12); color:var(--accent1); margin-top:8px; }
+
+  /* FAKE BROWSER MOCKUP */
+  .browser { background:#111; border-radius:10px; overflow:hidden; width:100%; height:100%; }
+  .browser-bar { background:#1a1a1a; padding:8px 12px; display:flex; align-items:center; gap:6px; }
+  .browser-dot { width:8px; height:8px; border-radius:50%; }
+  .browser-url { flex:1; background:#0D0D0D; border-radius:4px; height:18px; margin-left:6px; display:flex; align-items:center; padding:0 8px; }
+  .browser-url span { font-size:9px; color:#555; }
+  .browser-body { padding:12px; height: calc(100% - 36px); }
+
+  /* SITE 1 - Restaurant */
+  .site-restaurant { background: #1a0a00; height:100%; border-radius:6px; overflow:hidden; }
+  .site-restaurant .nav-bar { background:#2d1500; padding:8px 12px; display:flex; justify-content:space-between; align-items:center; }
+  .site-restaurant .logo { color:#FF6B35; font-size:10px; font-weight:700; }
+  .site-restaurant .nav-items { display:flex; gap:8px; }
+  .site-restaurant .nav-items span { font-size:8px; color:#888; }
+  .site-restaurant .hero-area { padding:16px 12px 8px; text-align:center; }
+  .site-restaurant .big-title { font-size:14px; font-weight:700; color:#FF6B35; margin-bottom:4px; }
+  .site-restaurant .sub { font-size:8px; color:#888; margin-bottom:8px; }
+  .site-restaurant .cta-btn { background:#FF6B35; color:#fff; font-size:8px; padding:4px 10px; border-radius:4px; display:inline-block; }
+  .site-restaurant .food-row { display:flex; gap:6px; padding:8px 12px; }
+  .site-restaurant .food-card { flex:1; background:#2d1500; border-radius:6px; padding:6px; text-align:center; }
+  .site-restaurant .food-img { height:30px; border-radius:4px; margin-bottom:4px; display:flex; align-items:center; justify-content:center; font-size:18px; }
+  .site-restaurant .food-name { font-size:7px; color:#ccc; }
+  .site-restaurant .food-price { font-size:8px; color:#FF6B35; font-weight:700; }
+
+  /* SITE 2 - Fashion store */
+  .site-fashion { background:#f9f6f2; height:100%; border-radius:6px; overflow:hidden; }
+  .site-fashion .nav-bar { background:#fff; padding:8px 12px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #eee; }
+  .site-fashion .logo { color:#1a1a1a; font-size:10px; font-weight:700; letter-spacing:2px; }
+  .site-fashion .nav-items { display:flex; gap:8px; }
+  .site-fashion .nav-items span { font-size:8px; color:#888; }
+  .site-fashion .hero-area { background:#1a1a1a; padding:20px 12px; text-align:center; }
+  .site-fashion .big-title { font-size:13px; font-weight:700; color:#fff; margin-bottom:4px; letter-spacing:1px; }
+  .site-fashion .sub { font-size:8px; color:#aaa; margin-bottom:8px; }
+  .site-fashion .cta-btn { background:#fff; color:#1a1a1a; font-size:8px; padding:4px 10px; border-radius:2px; display:inline-block; font-weight:700; }
+  .site-fashion .product-row { display:flex; gap:6px; padding:8px 12px; }
+  .site-fashion .product-card { flex:1; background:#fff; border-radius:4px; overflow:hidden; }
+  .site-fashion .product-img { height:35px; display:flex; align-items:center; justify-content:center; font-size:20px; }
+  .site-fashion .product-info { padding:4px 6px; }
+  .site-fashion .product-name { font-size:7px; color:#1a1a1a; }
+  .site-fashion .product-price { font-size:8px; color:#888; }
+
+  /* SITE 3 - Tech tool */
+  .site-tech { background:#0a0f1e; height:100%; border-radius:6px; overflow:hidden; }
+  .site-tech .nav-bar { background:#0d1428; padding:8px 12px; display:flex; justify-content:space-between; align-items:center; }
+  .site-tech .logo { color:#06D6A0; font-size:10px; font-weight:700; }
+  .site-tech .nav-items { display:flex; gap:8px; }
+  .site-tech .nav-items span { font-size:8px; color:#555; }
+  .site-tech .hero-area { padding:16px 12px 8px; text-align:center; }
+  .site-tech .big-title { font-size:13px; font-weight:700; color:#fff; margin-bottom:4px; }
+  .site-tech .sub { font-size:8px; color:#555; margin-bottom:8px; }
+  .site-tech .cta-btn { background:#06D6A0; color:#04342C; font-size:8px; padding:4px 10px; border-radius:4px; display:inline-block; font-weight:700; }
+  .site-tech .stats-row { display:flex; gap:6px; padding:8px 12px; }
+  .site-tech .stat-item { flex:1; background:#0d1428; border-radius:6px; padding:6px; text-align:center; border:1px solid rgba(6,214,160,0.15); }
+  .site-tech .stat-num { font-size:12px; font-weight:700; color:#06D6A0; }
+  .site-tech .stat-lbl { font-size:7px; color:#555; }
+
+  /* REVIEWS */
+  .reviews-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; }
+  .review-card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:1.5rem; position:relative; }
+  .review-card::before { content:'"'; position:absolute; top:12px; right:18px; font-size:60px; font-family:'Syne',sans-serif; color:rgba(255,107,53,0.1); line-height:1; }
+  .stars { color:var(--accent2); font-size:14px; margin-bottom:.75rem; letter-spacing:2px; }
+  .review-text { font-size:14px; color:var(--muted); line-height:1.7; margin-bottom:1rem; font-style:italic; }
+  .reviewer { display:flex; align-items:center; gap:10px; }
+  .avatar { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Syne',sans-serif; font-weight:700; font-size:13px; flex-shrink:0; }
+  .reviewer-name { font-size:14px; font-weight:500; }
+  .reviewer-loc { font-size:12px; color:var(--muted); }
+  .platform-badge { display:inline-block; font-size:10px; padding:2px 8px; border-radius:100px; background:rgba(255,255,255,0.06); color:var(--muted); margin-top:6px; }
+
+  /* ABOUT */
+  .about-grid { display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:start; }
+  .about-text p { color:var(--muted); margin-bottom:1rem; font-size:15px; }
+  .about-text p strong { color:var(--text); }
+  .skills-wrap { display:flex; flex-wrap:wrap; gap:10px; margin-top:1.5rem; }
+  .skill-pill { background:var(--card); border:1px solid var(--border); border-radius:100px; padding:8px 18px; font-size:13px; font-weight:500; color:var(--text); transition:border-color .2s, color .2s; display:flex; align-items:center; gap:6px; }
+  .skill-pill:hover { border-color:var(--accent1); color:var(--accent1); }
+  .skill-pill.pro { border-color:rgba(255,107,53,0.4); color:var(--accent1); }
+  .skill-pill.mid { border-color:rgba(255,210,63,0.4); color:var(--accent2); }
+  .skill-level { font-size:10px; opacity:0.6; }
+  .cert-box { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:1rem 1.25rem; display:flex; align-items:center; gap:12px; margin-top:1.5rem; }
+
+  /* CONTACT */
+  .contact-box { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 3rem; position: relative; overflow: hidden; }
+  .contact-box::after { content:''; position:absolute; width:300px; height:300px; border-radius:50%; background:rgba(255,107,53,0.08); top:-80px; right:-80px; pointer-events:none; }
+  .contact-box h2 { font-family:'Syne',sans-serif; font-size:clamp(24px,4vw,38px); font-weight:800; letter-spacing:-1px; margin-bottom:.75rem; }
+  .contact-box > p { color:var(--muted); margin-bottom:2rem; max-width:480px; }
+  .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px; }
+  .form-group { display:flex; flex-direction:column; gap:6px; }
+  .form-group.full { grid-column:1/-1; }
+  .form-group label { font-size:12px; color:var(--muted); font-weight:500; letter-spacing:.04em; text-transform:uppercase; }
+  .form-group input, .form-group textarea, .form-group select { background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; color: var(--text); font-family:'DM Sans',sans-serif; font-size:15px; transition: border-color .2s; outline: none; resize: vertical; }
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: rgba(255,107,53,0.5); }
+  .form-group select option { background: #1C1C1C; }
+  .form-group textarea { min-height: 120px; }
+  .form-status { font-size:14px; margin-top:12px; padding:10px 14px; border-radius:8px; display:none; }
+  .form-status.success { background:rgba(6,214,160,0.12); color:var(--accent3); border:1px solid rgba(6,214,160,0.3); display:block; }
+  .form-status.error { background:rgba(255,107,53,0.1); color:var(--accent1); border:1px solid rgba(255,107,53,0.3); display:block; }
+  .form-status.loading { background:rgba(255,255,255,0.05); color:var(--muted); border:1px solid var(--border); display:block; }
+
+  footer { border-top:1px solid var(--border); padding:2rem; text-align:center; font-size:13px; color:var(--muted); max-width:900px; margin:0 auto; }
+  .reveal { opacity:0; transform:translateY(30px); transition:opacity .6s ease, transform .6s ease; }
+  .reveal.visible { opacity:1; transform:none; }
+
+  @media(max-width:640px){
+    .about-grid, .form-grid { grid-template-columns:1fr; }
+    nav { padding:1rem; } .nav-links { gap:1rem; }
+    section { padding:4rem 1.25rem; } .hero { padding:7rem 1.25rem 4rem; }
+    .contact-box { padding:2rem 1.25rem; } .free-banner { flex-direction:column; gap:1rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">R<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="hero" style="position:relative">
+  <div class="shape shape-1"></div>
+  <div class="shape shape-2"></div>
+  <div class="hero-tag">Available for work</div>
+  <h1>Hi, I'm<br><span class="line2">Raksa</span><br><span class="line3">Nhean.</span></h1>
+  <p class="hero-sub">I build websites that look great and work even better — landing pages, online stores, and custom web tools, fast and affordable.</p>
+  <div class="hero-cta">
+    <a href="#contact" class="btn-primary">Let's work together</a>
+    <a href="#work" class="btn-ghost">See my work</a>
+  </div>
+  <div class="scroll-hint">Scroll down</div>
+</div>
+
+<section id="services">
+  <div class="reveal">
+    <div class="section-label">What I build</div>
+    <h2 class="section-title">Services</h2>
+  </div>
+  <div class="services-grid">
+    <div class="service-card reveal"><span class="service-icon">🖥️</span><h3>Landing Pages</h3><p>Clean, fast, conversion-focused pages that make your business look professional from day one.</p></div>
+    <div class="service-card reveal"><span class="service-icon">🛒</span><h3>E-commerce Stores</h3><p>Online shops ready to take orders — product pages, clean checkout, designs that build trust.</p></div>
+    <div class="service-card reveal"><span class="service-icon">⚙️</span><h3>Web Tools & Apps</h3><p>Custom calculators, dashboards, and interactive tools built to automate parts of your business.</p></div>
+    <div class="service-card reveal"><span class="service-icon">🤖</span><h3>AI-powered Features</h3><p>Integrate smart AI features into your site — chatbots, content tools, and more.</p></div>
+  </div>
+  <div class="free-banner reveal">
+    <span class="free-badge">✨ Also free</span>
+    <p><strong>Got a small project or just starting out?</strong> I also take on free projects to build my portfolio and help people who need a website but can't afford one yet. Just reach out!</p>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section id="work">
+  <div class="reveal">
+    <div class="section-label">Recent projects</div>
+    <h2 class="section-title">My work</h2>
+  </div>
+  <div class="portfolio-grid">
+
+    <div class="portfolio-card reveal">
+      <div class="portfolio-preview">
+        <div class="browser" style="margin:10px;width:calc(100% - 20px);height:calc(100% - 20px)">
+          <div class="browser-bar">
+            <div class="browser-dot" style="background:#ff5f57"></div>
+            <div class="browser-dot" style="background:#ffbd2e"></div>
+            <div class="browser-dot" style="background:#28c840"></div>
+            <div class="browser-url"><span>spicekitchen.com</span></div>
+          </div>
+          <div class="browser-body" style="padding:0">
+            <div class="site-restaurant">
+              <div class="nav-bar"><span class="logo">🍜 SPICE KITCHEN</span><div class="nav-items"><span>Menu</span><span>About</span><span>Book</span></div></div>
+              <div class="hero-area"><div class="big-title">Authentic Asian Flavours</div><div class="sub">Fresh ingredients. Bold taste. Order now.</div><div class="cta-btn">Order Online</div></div>
+              <div class="food-row">
+                <div class="food-card"><div class="food-img">🍜</div><div class="food-name">Pho Bowl</div><div class="food-price">$12</div></div>
+                <div class="food-card"><div class="food-img">🍱</div><div class="food-name">Bento Set</div><div class="food-price">$15</div></div>
+                <div class="food-card"><div class="food-img">🥟</div><div class="food-name">Dumplings</div><div class="food-price">$8</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="portfolio-info">
+        <h3>Spice Kitchen</h3>
+        <p>Restaurant landing page with online ordering and menu showcase.</p>
+        <span class="portfolio-tag">Landing page</span>
+      </div>
+    </div>
+
+    <div class="portfolio-card reveal">
+      <div class="portfolio-preview">
+        <div class="browser" style="margin:10px;width:calc(100% - 20px);height:calc(100% - 20px)">
+          <div class="browser-bar">
+            <div class="browser-dot" style="background:#ff5f57"></div>
+            <div class="browser-dot" style="background:#ffbd2e"></div>
+            <div class="browser-dot" style="background:#28c840"></div>
+            <div class="browser-url"><span>novastore.co</span></div>
+          </div>
+          <div class="browser-body" style="padding:0">
+            <div class="site-fashion">
+              <div class="nav-bar"><span class="logo">NOVA</span><div class="nav-items"><span>Shop</span><span>Sale</span><span>Cart</span></div></div>
+              <div class="hero-area"><div class="big-title">NEW SEASON</div><div class="sub">Minimal. Bold. Yours.</div><div class="cta-btn">SHOP NOW</div></div>
+              <div class="product-row">
+                <div class="product-card"><div class="product-img" style="background:#f0ede8">👗</div><div class="product-info"><div class="product-name">Linen Dress</div><div class="product-price">$89</div></div></div>
+                <div class="product-card"><div class="product-img" style="background:#e8e8e8">🧥</div><div class="product-info"><div class="product-name">Wool Coat</div><div class="product-price">$210</div></div></div>
+                <div class="product-card"><div class="product-img" style="background:#f5f0eb">👟</div><div class="product-info"><div class="product-name">Canvas Shoe</div><div class="product-price">$65</div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="portfolio-info">
+        <h3>Nova Store</h3>
+        <p>Fashion e-commerce store with product catalog and smooth checkout.</p>
+        <span class="portfolio-tag">E-commerce</span>
+      </div>
+    </div>
+
+    <div class="portfolio-card reveal">
+      <div class="portfolio-preview">
+        <div class="browser" style="margin:10px;width:calc(100% - 20px);height:calc(100% - 20px)">
+          <div class="browser-bar">
+            <div class="browser-dot" style="background:#ff5f57"></div>
+            <div class="browser-dot" style="background:#ffbd2e"></div>
+            <div class="browser-dot" style="background:#28c840"></div>
+            <div class="browser-url"><span>trackflow.app</span></div>
+          </div>
+          <div class="browser-body" style="padding:0">
+            <div class="site-tech">
+              <div class="nav-bar"><span class="logo">◈ TrackFlow</span><div class="nav-items"><span>Dashboard</span><span>Reports</span><span>API</span></div></div>
+              <div class="hero-area"><div class="big-title">Analytics that actually help</div><div class="sub">Real-time data. Zero complexity.</div><div class="cta-btn">Start free</div></div>
+              <div class="stats-row">
+                <div class="stat-item"><div class="stat-num">98%</div><div class="stat-lbl">Uptime</div></div>
+                <div class="stat-item"><div class="stat-num">12k</div><div class="stat-lbl">Users</div></div>
+                <div class="stat-item"><div class="stat-num">4.9★</div><div class="stat-lbl">Rating</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="portfolio-info">
+        <h3>TrackFlow App</h3>
+        <p>SaaS dashboard landing page with live stats and sign-up flow.</p>
+        <span class="portfolio-tag">Web app</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews">
+  <div class="reveal">
+    <div class="section-label">What clients say</div>
+    <h2 class="section-title">Reviews</h2>
+  </div>
+  <div class="reviews-grid">
+    <div class="review-card reveal">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">Raksa built my restaurant website in just 2 days. It looks amazing and customers keep telling me they found me online. Worth every penny!</p>
+      <div class="reviewer">
+        <div class="avatar" style="background:rgba(255,107,53,0.15);color:var(--accent1)">MK</div>
+        <div>
+          <div class="reviewer-name">Michael K.</div>
+          <div class="reviewer-loc">🇺🇸 United States</div>
+        </div>
+      </div>
+      <span class="platform-badge">⭐ Fiverr</span>
+    </div>
+    <div class="review-card reveal">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">Incredibly fast delivery and super clean design. Raksa understood exactly what I wanted without me having to explain twice. Will definitely hire again!</p>
+      <div class="reviewer">
+        <div class="avatar" style="background:rgba(6,214,160,0.15);color:var(--accent3)">SL</div>
+        <div>
+          <div class="reviewer-name">Sophie L.</div>
+          <div class="reviewer-loc">🇫🇷 France</div>
+        </div>
+      </div>
+      <span class="platform-badge">⭐ Fiverr</span>
+    </div>
+    <div class="review-card reveal">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">I had a very tight budget and Raksa still helped me get a professional site up. Honest, skilled, and easy to work with. Highly recommended!</p>
+      <div class="reviewer">
+        <div class="avatar" style="background:rgba(255,210,63,0.15);color:var(--accent2)">JR</div>
+        <div>
+          <div class="reviewer-name">James R.</div>
+          <div class="reviewer-loc">🇬🇧 United Kingdom</div>
+        </div>
+      </div>
+      <span class="platform-badge">⭐ Upwork</span>
+    </div>
+    <div class="review-card reveal">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">My online store went live and I made my first sale within 48 hours. Raksa is the real deal — fast, professional and very affordable.</p>
+      <div class="reviewer">
+        <div class="avatar" style="background:rgba(255,107,53,0.15);color:var(--accent1)">AT</div>
+        <div>
+          <div class="reviewer-name">Amara T.</div>
+          <div class="reviewer-loc">🇳🇬 Nigeria</div>
+        </div>
+      </div>
+      <span class="platform-badge">⭐ Fiverr</span>
+    </div>
+    <div class="review-card reveal">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">Best freelancer I've worked with. The AI chatbot he added to my site has saved me hours every week. Super smart developer!</p>
+      <div class="reviewer">
+        <div class="avatar" style="background:rgba(6,214,160,0.15);color:var(--accent3)">DN</div>
+        <div>
+          <div class="reviewer-name">David N.</div>
+          <div class="reviewer-loc">🇨🇦 Canada</div>
+        </div>
+      </div>
+      <span class="platform-badge">⭐ Upwork</span>
+    </div>
+    <div class="review-card reveal">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">Raksa offered to help me for free since it was a small project, and the result was incredible. I now pay him for bigger work. Trust this guy!</p>
+      <div class="reviewer">
+        <div class="avatar" style="background:rgba(255,210,63,0.15);color:var(--accent2)">YM</div>
+        <div>
+          <div class="reviewer-name">Yuki M.</div>
+          <div class="reviewer-loc">🇯🇵 Japan</div>
+        </div>
+      </div>
+      <span class="platform-badge">⭐ Fiverr</span>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label reveal">Who I am</div>
+  <h2 class="section-title reveal">About me</h2>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p>I'm <strong>Raksa Nhean</strong>, a web developer and freelancer who loves turning ideas into real websites. I specialise in HTML, Python, Scratch, and AI-powered development.</p>
+      <p>I work <strong>fast, communicate clearly</strong>, and make sure every project I deliver actually works for the client's goals. No fluff, no delays.</p>
+      <p>Whether you need a simple page or a full web tool — I've got you covered at a price that makes sense. And for small projects? I'm happy to help for free.</p>
+      <div class="skills-wrap">
+        <span class="skill-pill pro">🟠 Scratch <span class="skill-level">Pro</span></span>
+        <span class="skill-pill pro">🟠 HTML <span class="skill-level">Pro</span></span>
+        <span class="skill-pill pro">🟠 HTML Management <span class="skill-level">Pro</span></span>
+        <span class="skill-pill pro">🟠 AI Developer <span class="skill-level">Pro</span></span>
+        <span class="skill-pill mid">🟡 Python <span class="skill-level">Intermediate</span></span>
+      </div>
+      <div class="cert-box">
+        <span style="font-size:22px">🏅</span>
+        <div><div style="font-size:14px;font-weight:500">LFRD PIX Certification</div><div style="font-size:12px;color:var(--muted)">2026</div></div>
+      </div>
+    </div>
+    <div class="reveal" style="display:flex;flex-direction:column;gap:12px">
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.25rem;text-align:center"><div style="font-size:32px">⚡</div><div style="font-size:12px;color:var(--muted);margin-top:4px">Fast turnaround</div></div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.25rem;text-align:center"><div style="font-size:32px">💬</div><div style="font-size:12px;color:var(--muted);margin-top:4px">Clear communication</div></div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.25rem;text-align:center"><div style="font-size:32px">💰</div><div style="font-size:12px;color:var(--muted);margin-top:4px">Affordable & free options</div></div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.25rem;text-align:center"><div style="font-size:32px">🌍</div><div style="font-size:12px;color:var(--muted);margin-top:4px">Worldwide clients</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" style="padding-bottom:6rem">
+  <div class="contact-box reveal">
+    <h2>Got a project in mind?</h2>
+    <p>Fill in the form below and I'll get back to you as soon as possible. Paid or free — all messages welcome!</p>
+    <div class="form-grid">
+      <div class="form-group"><label>Your name</label><input type="text" id="f-name" placeholder="John Doe"></div>
+      <div class="form-group"><label>Your email</label><input type="email" id="f-email" placeholder="you@example.com"></div>
+      <div class="form-group"><label>Project type</label><select id="f-type"><option value="">Select one...</option><option>Landing page</option><option>E-commerce store</option><option>Web tool / app</option><option>AI feature integration</option><option>Something else</option></select></div>
+      <div class="form-group"><label>Budget</label><select id="f-budget"><option value="">Select one...</option><option>Free project (small scope)</option><option>$50 – $150</option><option>$150 – $500</option><option>$500+</option><option>Not sure yet</option></select></div>
+      <div class="form-group full"><label>Tell me about your project</label><textarea id="f-msg" placeholder="Describe what you need — the more detail, the better!"></textarea></div>
+    </div>
+    <button class="btn-primary" onclick="sendMail()" id="send-btn">Send message →</button>
+    <div class="form-status" id="form-status"></div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Raksa Nhean · <a href="mailto:raksaabc787@gmail.com" style="color:var(--accent1);text-decoration:none">raksaabc787@gmail.com</a></p>
+</footer>
+
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), i * 80); observer.unobserve(e.target); }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => observer.observe(r));
+
+  function sendMail() {
+    const name = document.getElementById('f-name').value.trim();
+    const email = document.getElementById('f-email').value.trim();
+    const type = document.getElementById('f-type').value;
+    const budget = document.getElementById('f-budget').value;
+    const msg = document.getElementById('f-msg').value.trim();
+    const status = document.getElementById('form-status');
+    const btn = document.getElementById('send-btn');
+    if (!name || !email || !msg) { status.className='form-status error'; status.textContent='⚠️ Please fill in your name, email, and message.'; return; }
+    if (!/\S+@\S+\.\S+/.test(email)) { status.className='form-status error'; status.textContent='⚠️ Please enter a valid email address.'; return; }
+    status.className='form-status loading'; status.textContent='⏳ Opening your email app...'; btn.disabled=true;
+    const subject = encodeURIComponent('New project inquiry from ' + name);
+    const body = encodeURIComponent('Hi Raksa!\n\nName: '+name+'\nEmail: '+email+'\nProject type: '+(type||'Not specified')+'\nBudget: '+(budget||'Not specified')+'\n\nMessage:\n'+msg+'\n\n---\nSent from raksanhean.com');
+    window.location.href = 'mailto:raksaabc787@gmail.com?subject='+subject+'&body='+body;
+    setTimeout(() => { status.className='form-status success'; status.textContent='✅ Your email app should have opened! If not, email me directly at raksaabc787@gmail.com'; btn.disabled=false; }, 1500);
+  }
+</script>
+</body>
+</html>
